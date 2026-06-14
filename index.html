@@ -403,8 +403,15 @@ function sub(){
   var btn=document.getElementById('esbtn');
   btn.disabled=true;
   btn.textContent='Sending...';
+  var score=ans.reduce(function(s,a,i){return s+(a!==null?Qs[i].opts[a].v:0);},0);
+  var st=getStage(score);
+  var stageField='stage-1-believer';
+  if(st.range[0]===18) stageField='stage-2';
+  if(st.range[0]===26) stageField='stage-3';
+  if(st.range[0]===34) stageField='stage-4';
   var fd=new FormData();
   fd.append('email_address',v);
+  fd.append('fields['+stageField+']','true');
   fetch('https://app.kit.com/forms/9557742/subscriptions',{method:'POST',body:fd})
   .then(function(){c.innerHTML='<p class="success-msg">&#10003; You\'re in! Check your inbox.</p>';document.getElementById('ei').disabled=true;})
   .catch(function(){c.innerHTML='<p class="success-msg">&#10003; You\'re in! Check your inbox.</p>';document.getElementById('ei').disabled=true;});
